@@ -1,0 +1,39 @@
+# Копия -> config.yaml, заполнить своё. Координаты калибровщик запишет сам.
+# !!! ТЕСТ-РЕЖИМ: сайт не трогаем, зачислений нет, только клики и логи.
+
+# --- тест ---
+# Ники для теста (как в игре, без @). Пусто = брать ПЕРВУЮ строку (опасно при живых людях!).
+only_nicks:
+  - VashTestNick
+
+# --- правила приёмки (как сказали) ---
+whitelist_rap: [66, 65, 44, 43, 42]  # Viridian 66, Nebula 65, Chrysalis 44, Glove2/Lionheart 43, Apex/Finishline/Glove 42
+min_total_rap: 35
+max_items: 6
+single_page_only: true   # есть 2-я страница (1/2) -> decline
+accept_stable_sec: 4.0   # accept жмём только если суммы не менялись столько секунд (кд кнопки)
+wait_items_sec: 180      # сколько ждём пока положат кейсы
+wait_window_sec: 15      # сколько ждём открытия окна трейда
+wait_close_sec: 30       # сколько ждём закрытия окна после accept
+
+# --- опрос ---
+poll_idle_sec: 5.0        # как часто смотрим бейдж уведомлений
+force_scan_sec: 30.0      # и раз в столько открываем список принудительно
+
+# --- пороги шаблонов (0..1), ниже = чувствительнее ---
+thresholds:
+  badge: 0.8
+  person: 0.85
+  accept: 0.85
+  decline: 0.85
+  close: 0.85
+  plus: 0.8
+
+templates_dir: templates
+tesseract_cmd: ""  # пусто = из PATH. Иначе полный путь к tesseract.exe
+ocr_lang: eng
+
+# --- заполняет calibrate.py, руками не трогать ---
+screen: {w: 1920, h: 1080}
+regions: {}
+points: {}
