@@ -11,6 +11,8 @@ whitelist_rap: [66, 65, 44, 43, 42]  # Viridian 66, Nebula 65, Chrysalis 44, Glo
 min_total_rap: 35
 max_items: 6
 single_page_only: true   # есть 2-я страница (1/2) -> decline
+check_total_match: true  # сумма слотов должна совпасть с Total RAP, иначе ждём
+auto_focus: true         # сам выводить окно Roblox на передний план
 accept_stable_sec: 4.0   # accept жмём только если суммы не менялись столько секунд (кд кнопки)
 wait_items_sec: 180      # сколько ждём пока положат кейсы
 wait_window_sec: 15      # сколько ждём открытия окна трейда
