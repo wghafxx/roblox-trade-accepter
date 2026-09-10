@@ -13,6 +13,10 @@ print("Режим мыши :", mouse.mode())
 print("Админ      :", mouse.is_admin())
 print("Экран      :", mouse.screen_size())
 print("Окно Roblox:", "найдено" if mouse.roblox_window() else "НЕ найдено (запусти игру)")
+if not mouse.using_interception():
+    print("\n!!! Драйвер НЕ активен: движения будут телепортами, игра их проигнорирует.")
+    print("1) install-interception.exe /install от админа 2) ПЕРЕЗАГРУЗКА 3) повторный тест.")
+    raise SystemExit(2)
 
 input("\nОткрой игру (Trade Plaza), чтобы был виден левый край с иконками, и нажми Enter...")
 x = int(input("X иконки человечка: "))

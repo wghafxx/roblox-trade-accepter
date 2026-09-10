@@ -92,9 +92,12 @@ def main():
     log("Старт. only_nicks =", sorted(cfg.only) or "ПУСТО (беру первую строку!)",
         "| whitelist =", sorted(cfg.white))
     log("Мышь:", mouse.mode(), "| админ:", mouse.is_admin())
-    if not mouse.using_interception():
-        log("ВНИМАНИЕ: работаем через SendInput. Если клики не доходят до игры — "
-            "поставь драйвер Interception (README) и pip install interception-python pywin32")
+    if not mouse.using_interception() and not cfg.d.get("allow_sendinput", False):
+        log("СТОП: драйвер Interception не активен — клики будут телепортироваться и игра их проигнорирует.")
+        log("Что делать: 1) install-interception.exe /install от админа 2) ПЕРЕЗАГРУЗИТЬ ПК 3) pip install interception-python pywin32")
+        log("Проверь: python test_mouse2.py должен показать 'Режим мыши: interception'.")
+        log("Если очень надо без драйвера — поставь allow_sendinput: true в config.yaml (клики могут не работать).")
+        sys.exit(2)
 
     screen = Screen()
     scr = cfg.d.get("screen", {}) or {}

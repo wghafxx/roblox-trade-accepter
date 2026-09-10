@@ -10,6 +10,7 @@
 """
 import ctypes
 import ctypes.wintypes as wt
+import random
 import time
 
 user32 = ctypes.windll.user32
@@ -129,19 +130,26 @@ def _move_si(x, y):
 
 
 # ---------- публичный API ----------
-def move(x, y, steps=12):
-    """Плавно ведёт курсор в точку и проверяет, что он реально туда попал."""
+def move(x, y, duration=0.45):
+    """Плавно ведёт курсор в точку за duration секунд и проверяет попадание."""
     x, y = int(x), int(y)
     ic = _init_interception()
     px, py = cursor_pos()
+    dist = ((x - px) ** 2 + (y - py) ** 2) ** 0.5
+    if dist < 2:
+        return
+    total = max(0.25, min(1.2, duration * (0.5 + dist / 800.0)))
+    steps = max(8, int(total / 0.016))
     for i in range(1, steps + 1):
-        sx = round(px + (x - px) * i / steps)
-        sy = round(py + (y - py) * i / steps)
+        t = i / steps
+        t = t * t * (3 - 2 * t)  # smoothstep: старт/финиш мягко, середина быстро
+        sx = round(px + (x - px) * t + random.uniform(-0.6, 0.6))
+        sy = round(py + (y - py) * t + random.uniform(-0.6, 0.6))
         if ic is not None:
             ic.move_to(sx, sy)
         else:
             _move_si(sx, sy)
-        time.sleep(0.012)
+        time.sleep(total / steps)
     cx, cy = cursor_pos()
     if abs(cx - x) > 2 or abs(cy - y) > 2:
         if ic is not None:
@@ -155,11 +163,11 @@ def move(x, y, steps=12):
 def click(x, y, pre_delay=0.1, post_delay=0.15):
     """Навести -> подождать hover -> нажать -> подержать -> отпустить."""
     ic = _init_interception()
-    time.sleep(pre_delay)
-    move(x, y)
+    time.sleep(pre_delay + random.uniform(0, 0.08))
+    move(x + random.randint(-1, 1), y + random.randint(-1, 1))
     time.sleep(HOVER_DELAY)
     if ic is not None:
-        ic.mouse_down("left", HOLD_DELAY)
+        ic.mouse_down("left", HOLD_DELAY + random.uniform(0, 0.04))
         ic.mouse_up("left", 0.03)
     else:
         _send(MOUSEEVENTF_LEFTDOWN)
